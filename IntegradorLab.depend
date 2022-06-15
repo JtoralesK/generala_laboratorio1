@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1654819181 source:c:\users\torales\desktop\src\laboratorio1\integrador\integradorlab\main.cpp
+	<iostream>
+	<time.h>
+	<stdlib.h>
+	"funciones.h"
+
+1654821079 c:\users\torales\desktop\src\laboratorio1\integrador\integradorlab\funciones.h
+
