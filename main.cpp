@@ -21,10 +21,8 @@ int main(){
         break;
         case 1:
         pantalla1();
-        cout<<"caso 1"<<endl;
         break;
         case 2:
-        cout<<"caso 2"<<endl;
         break;
         default : cout<<"opcion incorrecta"<<endl;
     }
