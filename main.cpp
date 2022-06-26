@@ -1,6 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
+
 using namespace std;
 #include "funciones.h"
 int main(){
@@ -20,13 +21,10 @@ int main(){
         seguir=false;
         break;
         case 1:
-        pantalla1();
-        break;
-        case 2:
+          partida();
         break;
         default : cout<<"opcion incorrecta"<<endl;
     }
-    system("pause");
     }
     return 0;
 }
