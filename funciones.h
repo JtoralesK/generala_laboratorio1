@@ -1,17 +1,18 @@
 #ifndef FUNCIONES_H_INCLUDED
 #define FUNCIONES_H_INCLUDED
-
-void niegaTodoVector(int v[],int tam){
+void niegaMatriz(int v[][2],int tam){
  for(int x=0;x<tam;x++){
-        v[x]=-1;
+        v[x][0]=-1;
         }
+    for(int x=0;x<tam;x++){
+    v[x][1]=-1;
+    }
 }
 void poneTodoUnvEn0(int v[],int tam){
  for(int x=0;x<tam;x++){
         v[x]=0;
         }
 }
-
 int contarNumerosRepetidos(int v[], int numero, int tam){
     int i, cant=0;
     for(i=0;i<tam;i++){
@@ -20,9 +21,16 @@ int contarNumerosRepetidos(int v[], int numero, int tam){
     return cant;
 }
 void imprimeVector(int v[],int tam){
-    for(int i=0;i<tam;i++){
-        cout<<v[i]<<endl;
+for(int i=0;i<tam;i++){
+    cout<<v[i]<<endl;
+}
+}
+int sumaPuntaje(int vPuntaje[][2],int tam,int ju){
+    int puntaje=0;
+    for(int i=0;i<10;i++){
+        if(vPuntaje[i][ju]!=-1)puntaje=puntaje+vPuntaje[i][ju];
     }
+    return puntaje;
 }
 void contarRepetidos (int v1[] , int tam , int v2[] ){
 int c1=0 , c2=0 , c3=0 , c4=0 , c5=0 , c6=0 , i;
@@ -37,7 +45,6 @@ for (i=0;i<tam;i++){
     }
 }
 }
-
 bool detectarEscalera(int v[], int tam){
 int i,c=0;
 bool esc=false;
@@ -78,59 +85,57 @@ for (i=0;i<tam;i++){
 }
 return generala;
 }
-void anotarPuntos(int dados[],int puntaje[],int j){
+void anotarPuntos(int dados[],int puntaje[][2],int j,int ju){
     int tam2=6;
     int rep[6];
     poneTodoUnvEn0(rep,6);
     contarRepetidos(dados,5,rep);
-
 bool escalera , full , poker , generala;
 int n=j-1;
 switch(j){
-case 1:puntaje[n]=rep[n]*1;break;
-case 2:puntaje[n]=rep[n]*2;break;
-case 3:puntaje[n]=rep[n]*3;break;
-case 4:puntaje[n]=rep[n]*4;break;
-case 5:puntaje[n]=rep[n]*5;break;
-case 6:puntaje[n]=rep[n]*6;break;
-
+case 1:puntaje[n][ju]=rep[n]*1;break;
+case 2:puntaje[n][ju]=rep[n]*2;break;
+case 3:puntaje[n][ju]=rep[n]*3;break;
+case 4:puntaje[n][ju]=rep[n]*4;break;
+case 5:puntaje[n][ju]=rep[n]*5;break;
+case 6:puntaje[n][ju]=rep[n]*6;break;
 case 7:escalera=detectarEscalera(rep,tam2);
 if(escalera==true){
-    puntaje[n]=25;
+    puntaje[n][ju]=25;
 }
-else{puntaje[n]=0;}
+else{puntaje[n][ju]=0;}
 break;
 case 8:full=detectarFull(rep,tam2);
 if(full==true){
-puntaje[n]=30;
+puntaje[n][ju]=30;
 }
-else{puntaje[n]=0;}
+else{puntaje[n][ju]=0;}
 break;
 
 case 9:poker=detectarPoker(rep,tam2);
 if (poker==true){
-   puntaje[n]=40;
+   puntaje[n][ju]=40;
 }
-else{puntaje[n]=0;}
+else{puntaje[n][ju]=0;}
 break;
 
 case 10:generala=detectarGenerala(rep,tam2);
 if(generala==true){
-    puntaje[n]=50;
+    puntaje[n][ju]=50;
 }
-else{puntaje[n]=0;}
+else{puntaje[n][ju]=0;}
 break;
 }
 }
-int eligeJugada(int tirada,int puntaje[]){
+int eligeJugada(int tirada,int puntaje[][2],int ju){
     if(tirada!=3)cout<<"0|para volver a tirar"<<endl;
     for(int i=0;i<6;i++){
-        if(puntaje[i]==-1) cout<<i+1<<"|para "<<i+1<<endl;
+        if(puntaje[i][ju]==-1) cout<<i+1<<"|para "<<i+1<<endl;
         }
-    if(puntaje[6]==-1)cout<<"7|para E"<<endl;
-    if(puntaje[7]==-1)cout<<"8|para F"<<endl;
-    if(puntaje[8]==-1)cout<<"9|para P"<<endl;
-    if(puntaje[9]==-1)cout<<"10|para G"<<endl;
+    if(puntaje[6][ju]==-1)cout<<"7|para Escalera"<<endl;
+    if(puntaje[7][ju]==-1)cout<<"8|para Full"<<endl;
+    if(puntaje[8][ju]==-1)cout<<"9|para Poker"<<endl;
+    if(puntaje[9][ju]==-1)cout<<"10|para Generala"<<endl;
     int n ;
     cout<<"opcion:";cin>>n;
      system("cls");
@@ -145,24 +150,33 @@ void cargaDados(int v[],bool v2[],int tam){
             }
 }
 void elegirDados(bool v[] , int tam){
-int x;
-cout<<"ingrese 1 para quedarte con el dado y 0 para cambiarlo"<<endl;
-for(int i=0;i<5;i++){
-    cout<<"Dado "<<i+1<<":";cin>>x; x==1 ? v[i]=true : v[i]=false;
+int n,contador=0;
+cout<<"ingrese el numero de dado que desee conservar, para finalizar, presione el numero cero(0): "<<endl;cin>>n;
+while (n!=0 && contador<5){
+    switch (n){
+    case 1: v[n-1]=true; break;
+    case 2: v[n-1]=true; break;
+    case 3: v[n-1]=true; break;
+    case 4: v[n-1]=true; break;
+    case 5: v[n-1]=true; break;
+    default: cout<<"el numero ingresado no es correcto"<<endl;
+    }
+    cout<<"--------"<<endl;
+    cin>>n;
+    contador++;
 }
  system("cls");
 }
-void partida(){
-    const int tam2=10;
-    int vPuntaje[tam2];
-        niegaTodoVector(vPuntaje,tam2);
+void partida(int cantJugaodores,int vPuntaje[][2]){
     const int tam=5;
+    int jugador=1;
     for(int i=1;i<=10;i++){
         cout<<"ronda "<<i<<endl;
-         int puntaje=0;
-         for(int i=0;i<10;i++){
-            if(vPuntaje[i]!=-1)puntaje=puntaje+vPuntaje[i];
-        }
+         for(int z=1;z<=cantJugaodores;z++){
+          int puntaje=0;
+         if(cantJugaodores==2)jugador=!jugador;
+        puntaje = sumaPuntaje(vPuntaje,10,jugador);
+        cout<<"Jugador "<<jugador+1<<endl;
         cout<<"puntaje:"<<puntaje<<endl;
         bool seguir=true;
         int dados[tam];
@@ -170,22 +184,33 @@ void partida(){
         int vuelta=0,t,tirada;
         cout<<"ingrese 1 para comenzar:";cin>>t;
         while(seguir==true){
-              if(vuelta==0){
-              cargaDados(dados,vFalsos,tam);
-              }else{
-               tirada = eligeJugada(vuelta,vPuntaje);
+              if(vuelta==0)cargaDados(dados,vFalsos,tam);
+              else{
+               tirada = eligeJugada(vuelta,vPuntaje,jugador);
               if(tirada==0){
-                 imprimeVector(dados,5);
-                elegirDados(vFalsos,5);
+                 imprimeVector(dados,tam);
+                elegirDados(vFalsos,tam);
                 cargaDados(dados,vFalsos,tam);
               }else seguir=false;
               }
-              imprimeVector(dados,5);
+              imprimeVector(dados,tam);
               if(vuelta==3)seguir=false;
             vuelta++;
         }
-        anotarPuntos(dados,vPuntaje,tirada);
+        anotarPuntos(dados,vPuntaje,tirada,jugador);
         system("cls");
+        }
     }
+}
+void iniciaPartida(){
+int n,j=0;
+int vPuntaje[10][2];
+niegaMatriz(vPuntaje,10);
+
+cout<<"1| 1 Jugador"<<endl;
+cout<<"2| 2 Jugadores"<<endl;
+cout<<"opcion:";cin>>n;
+system("cls");
+partida(n,vPuntaje);
 }
 #endif // FUNCIONES_H_INCLUDED

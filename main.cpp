@@ -11,7 +11,7 @@ int main(){
     system("cls");
     cout<<"-----------------------------"<<endl;
     cout<<"1| Iniciar partida"<<endl;
-    cout<<"0| Salir del programa"<<endl;
+    cout<<"0| Salir"<<endl;
     cout<<"-----------------------------"<<endl;
     cout<<"Opcion:";cin>>opciones;
      system("cls");
@@ -21,7 +21,7 @@ int main(){
         seguir=false;
         break;
         case 1:
-          partida();
+          iniciaPartida();
         break;
         default : cout<<"opcion incorrecta"<<endl;
     }
