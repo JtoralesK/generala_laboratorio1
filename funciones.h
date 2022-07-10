@@ -13,13 +13,6 @@ void poneTodoUnvEn0(int v[],int tam){
         v[x]=0;
         }
 }
-int contarNumerosRepetidos(int v[], int numero, int tam){
-    int i, cant=0;
-    for(i=0;i<tam;i++){
-        if(v[i]==numero) cant++;
-        }
-    return cant;
-}
 void imprimeVector(int v[],int tam){
 for(int i=0;i<tam;i++){
     cout<<v[i]<<endl;
@@ -167,22 +160,23 @@ while (n!=0 && contador<5){
 }
  system("cls");
 }
-void partida(int cantJugaodores,int vPuntaje[][2]){
+void partida(int cantJugaodores,int vPuntaje[][2],int ronda,char jug[2][10]){
     const int tam=5;
     int jugador=1;
-    for(int i=1;i<=10;i++){
-        cout<<"ronda "<<i<<endl;
+    for(int i=1;i<=ronda;i++){
          for(int z=1;z<=cantJugaodores;z++){
           int puntaje=0;
-         if(cantJugaodores==2)jugador=!jugador;
+         if(cantJugaodores==2){
+             jugador=!jugador;
+         }else jugador=0;
         puntaje = sumaPuntaje(vPuntaje,10,jugador);
-        cout<<"Jugador "<<jugador+1<<endl;
+        cout<<"ronda "<<i<<endl;
+        cout<<"Jugador:"<<jug[jugador]<<endl;
         cout<<"puntaje:"<<puntaje<<endl;
         bool seguir=true;
         int dados[tam];
         bool vFalsos[tam]={false,false,false,false,false};
-        int vuelta=0,t,tirada;
-        cout<<"ingrese 1 para comenzar:";cin>>t;
+        int vuelta=0,tirada;
         while(seguir==true){
               if(vuelta==0)cargaDados(dados,vFalsos,tam);
               else{
@@ -202,15 +196,40 @@ void partida(int cantJugaodores,int vPuntaje[][2]){
         }
     }
 }
-void iniciaPartida(){
+void imprimePuntaje(int players,int puntaje[][2],char jugUno[2][10]){
+    int r[2];
+    r[0]=0,r[1]=0;
+    for (int x=0;x<2;x++){
+        for(int i=0;i<10;i++){
+            if(puntaje[i][x]!=-1)r[x]=r[x]+puntaje[i][x];
+    }}
+    switch(players){
+    case 1:
+        cout<<jugUno[0]<<":"<<r[0]<<endl;
+    break;
+    case 2:
+         cout<<jugUno[0]<<":"<<r[0]<<endl;
+        cout<<jugUno[1]<<":"<<r[1]<<endl;
+    break;
+    }
+}
+void iniciaPartida(char nombres[2][10]){
+int r;
+cout<<"ingrese el numero de rondas a jugar:";cin>>r;
 int n,j=0;
 int vPuntaje[10][2];
 niegaMatriz(vPuntaje,10);
-
 cout<<"1| 1 Jugador"<<endl;
 cout<<"2| 2 Jugadores"<<endl;
 cout<<"opcion:";cin>>n;
 system("cls");
-partida(n,vPuntaje);
+  int i;
+  for(i=0;i<n;i++){
+    cout<<"Nombre del jugador "<<i+1<<":";cin>>nombres[i];
+    }
+system("cls");
+partida(n,vPuntaje,r,nombres);
+imprimePuntaje(n,vPuntaje,nombres);
+system("pause");
 }
 #endif // FUNCIONES_H_INCLUDED

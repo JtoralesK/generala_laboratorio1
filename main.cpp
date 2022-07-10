@@ -1,6 +1,7 @@
-#include <iostream>
-#include <time.h>
-#include <stdlib.h>
+# include<iostream>
+# include<cstdlib>
+# include<time.h>
+# include<string.h>
 
 using namespace std;
 #include "funciones.h"
@@ -21,7 +22,8 @@ int main(){
         seguir=false;
         break;
         case 1:
-          iniciaPartida();
+        char palabras[2][10];
+        iniciaPartida(palabras);
         break;
         default : cout<<"opcion incorrecta"<<endl;
     }
