@@ -13,10 +13,12 @@ void poneTodoUnvEn0(int v[],int tam){
         v[x]=0;
         }
 }
-void imprimeVector(int v[],int tam){
+void muestraDados(int v[],int tam){
+cout<<"--------"<<endl;
 for(int i=0;i<tam;i++){
-    cout<<v[i]<<endl;
+    cout<<"dado "<<i+1<<":"<<v[i]<<endl;
 }
+cout<<"--------"<<endl;
 }
 int sumaPuntaje(int vPuntaje[][2],int tam,int ju){
     int puntaje=0;
@@ -78,12 +80,27 @@ for (i=0;i<tam;i++){
 }
 return generala;
 }
-void anotarPuntos(int dados[],int puntaje[][2],int j,int ju){
-    int tam2=6;
+void eligeJugada(int puntaje[][2],int ju){
+    for(int i=0;i<6;i++){
+        if(puntaje[i][ju]==-1) cout<<i+1<<"|para "<<i+1<<endl;
+        }
+    if(puntaje[6][ju]==-1)cout<<"7|para Escalera"<<endl;
+    if(puntaje[7][ju]==-1)cout<<"8|para Full"<<endl;
+    if(puntaje[8][ju]==-1)cout<<"9|para Poker"<<endl;
+    if(puntaje[9][ju]==-1)cout<<"10|para Generala"<<endl;
+}
+void anotarPuntos(int dados[],int puntaje[][2],int ju){
+    int tam2=6,j;
     int rep[6];
     poneTodoUnvEn0(rep,6);
     contarRepetidos(dados,5,rep);
 bool escalera , full , poker , generala;
+eligeJugada(puntaje,ju);
+cout<<"ingrese jugada:";cin>>j;
+while(puntaje[j-1][ju]!=-1){
+cout<<"puntaje invalido"<<endl;
+cout<<"ingrese jugada:";cin>>j;
+}
 int n=j-1;
 switch(j){
 case 1:puntaje[n][ju]=rep[n]*1;break;
@@ -104,14 +121,12 @@ puntaje[n][ju]=30;
 }
 else{puntaje[n][ju]=0;}
 break;
-
 case 9:poker=detectarPoker(rep,tam2);
 if (poker==true){
    puntaje[n][ju]=40;
 }
 else{puntaje[n][ju]=0;}
 break;
-
 case 10:generala=detectarGenerala(rep,tam2);
 if(generala==true){
     puntaje[n][ju]=50;
@@ -119,20 +134,6 @@ if(generala==true){
 else{puntaje[n][ju]=0;}
 break;
 }
-}
-int eligeJugada(int tirada,int puntaje[][2],int ju){
-    if(tirada!=3)cout<<"0|para volver a tirar"<<endl;
-    for(int i=0;i<6;i++){
-        if(puntaje[i][ju]==-1) cout<<i+1<<"|para "<<i+1<<endl;
-        }
-    if(puntaje[6][ju]==-1)cout<<"7|para Escalera"<<endl;
-    if(puntaje[7][ju]==-1)cout<<"8|para Full"<<endl;
-    if(puntaje[8][ju]==-1)cout<<"9|para Poker"<<endl;
-    if(puntaje[9][ju]==-1)cout<<"10|para Generala"<<endl;
-    int n ;
-    cout<<"opcion:";cin>>n;
-     system("cls");
-   return n;
 }
 void cargaDados(int v[],bool v2[],int tam){
      int i;
@@ -142,94 +143,178 @@ void cargaDados(int v[],bool v2[],int tam){
             v[i]=(rand()%6)+1;}
             }
 }
-void elegirDados(bool v[] , int tam){
-int n,contador=0;
-cout<<"ingrese el numero de dado que desee conservar, para finalizar, presione el numero cero(0): "<<endl;cin>>n;
-while (n!=0 && contador<5){
+void elegirDados( bool v1[], int tam,int v2[],int tirT[2],int jugador,int& cServida ){
+int n , j , cont=0;
+char sn='s';
+tirT[jugador]=tirT[jugador]+1;
+while (sn=='s'&&cont!=2){
+        muestraDados(v2,tam);
+        cout<<"desea volver a tirar?(s/n): ";cin>>sn;
+        while(sn!='s'&&sn!='n'){
+            cout<<"caracter invalido"<<endl;
+            cout<<"desea volver a tirar?(s/n): ";cin>>sn;
+        }
+        cout<<"--------"<<endl;
+if(sn=='s'){
+    cServida++;
+    tirT[jugador]=tirT[jugador]+1;
+    cont++;
+    cout<<"cuantos dados desea guardar?: ";
+    cin>>j;
+    cout<<"--------"<<endl;
+    cout<<"que numero de dado desea guardar?: "<<endl<<"--------"<<endl;
+for (int i=1;i<=j;i++){
+        cin>>n;
     switch (n){
-    case 1: v[n-1]=true; break;
-    case 2: v[n-1]=true; break;
-    case 3: v[n-1]=true; break;
-    case 4: v[n-1]=true; break;
-    case 5: v[n-1]=true; break;
+    case 1: v1[n-1]=true; break;
+    case 2: v1[n-1]=true; break;
+    case 3: v1[n-1]=true; break;
+    case 4: v1[n-1]=true; break;
+    case 5: v1[n-1]=true; break;
     default: cout<<"el numero ingresado no es correcto"<<endl;
     }
     cout<<"--------"<<endl;
-    cin>>n;
-    contador++;
+}
+ system("cls");
+  cargaDados(v2,v1,tam);
+}
 }
  system("cls");
 }
-void partida(int cantJugaodores,int vPuntaje[][2],int ronda,char jug[2][10]){
-    const int tam=5;
-    int jugador=1;
-    for(int i=1;i<=ronda;i++){
-         for(int z=1;z<=cantJugaodores;z++){
-          int puntaje=0;
-         if(cantJugaodores==2){
-             jugador=!jugador;
-         }else jugador=0;
-        puntaje = sumaPuntaje(vPuntaje,10,jugador);
-        cout<<"ronda "<<i<<endl;
-        cout<<"Jugador:"<<jug[jugador]<<endl;
-        cout<<"puntaje:"<<puntaje<<endl;
-        bool seguir=true;
-        int dados[tam];
-        bool vFalsos[tam]={false,false,false,false,false};
-        int vuelta=0,tirada;
-        while(seguir==true){
-              if(vuelta==0)cargaDados(dados,vFalsos,tam);
-              else{
-               tirada = eligeJugada(vuelta,vPuntaje,jugador);
-              if(tirada==0){
-                 imprimeVector(dados,tam);
-                elegirDados(vFalsos,tam);
-                cargaDados(dados,vFalsos,tam);
-              }else seguir=false;
-              }
-              imprimeVector(dados,tam);
-              if(vuelta==3)seguir=false;
-            vuelta++;
-        }
-        anotarPuntos(dados,vPuntaje,tirada,jugador);
-        system("cls");
-        }
-    }
-}
-void imprimePuntaje(int players,int puntaje[][2],char jugUno[2][10]){
-    int r[2];
-    r[0]=0,r[1]=0;
-    for (int x=0;x<2;x++){
-        for(int i=0;i<10;i++){
-            if(puntaje[i][x]!=-1)r[x]=r[x]+puntaje[i][x];
-    }}
+void resumenRonda(int r,int tiradasTotales[2],int players,char jugadores[2][10],int puntaje[][2],int ronda){
+    if(r!=ronda){
+    cout<<"Ronda "<<r<<endl;
+    cout<<"Proximo turno:"<<jugadores[0]<<endl;
+    cout<<"Lanzamientos:"<<tiradasTotales[0]+tiradasTotales[1]<<endl;
+            int puntaje1 = sumaPuntaje(puntaje,10,0);
+            int puntaje2 = sumaPuntaje(puntaje,10,1);
     switch(players){
     case 1:
-        cout<<jugUno[0]<<":"<<r[0]<<endl;
+        cout<<jugadores[0]<<":"<<puntaje1<<endl;
     break;
     case 2:
-         cout<<jugUno[0]<<":"<<r[0]<<endl;
-        cout<<jugUno[1]<<":"<<r[1]<<endl;
+         cout<<jugadores[0]<<":"<<puntaje1<<endl;
+         cout<<jugadores[1]<<":"<<puntaje2<<endl;
     break;
     }
+    }
+    else{cout<<"FIN DEL JUEGO!"<<endl;}
+    system("pause");
+    system("cls");
 }
-void iniciaPartida(char nombres[2][10]){
-int r;
+void muestraGanador(char jugador[][10],int v[2],int tiradas[],int gan){
+    cout<<"el ganador es: "<<jugador[gan]<<"!!"<<endl;
+    cout<<"puntaje final: "<<v[gan]<<endl;
+    cout<<"tiradas totales del jugador: "<<tiradas[gan]<<endl;
+}
+
+int compararPuntajes(int mat[][2],char jugador[][10],int tiradas[],int cant, bool servidas[2],int& ganador,int& maxTiradas){
+    system("cls");
+int i,j, v[2],mayor;
+poneTodoUnvEn0(v,2);
+bool geServida=false;
+for(i=0;i<2;i++){
+    v[i]=sumaPuntaje(mat,10,i);
+    if(servidas[i]==true){
+    muestraGanador(jugador,v,tiradas,i);
+    geServida=true;
+     mayor=v[i];
+     ganador=i;
+     maxTiradas=tiradas[i];
+    }
+}
+    if(geServida==false){
+        if (v[0]>v[1]){
+                   muestraGanador(jugador,v,tiradas,0);
+                   mayor=v[0];
+                   ganador=0;
+                   maxTiradas=tiradas[0];
+        }else{
+        if(v[0]!=v[1]){
+                   muestraGanador(jugador,v,tiradas,1);
+                   mayor=v[1];
+                   ganador=1;
+                   maxTiradas=tiradas[1];
+                   }
+                        else{cout<<"TENEMOS UN EMPATE!"<<endl;
+                             cout<<"puntaje final de ambos jugadores: "<<v[0]<<endl;
+                             cout<<"tiradas totales: "<<tiradas[0]+tiradas[1]<<endl;
+                             mayor=v[0];}
+        }
+    }
+
+system("pause");
+system("cls");
+return mayor;
+}
+
+int partida(int cantJugad,int vPuntaje[][2],int ronda,char jug[2][10],int& ganador,int& maxTiradas){
+    const int tam=5;
+    int jugador,maximo,cServida,contServ[6],auxServida,numRonda=0,tiradasTotales[2];
+    poneTodoUnvEn0(tiradasTotales,2);
+    bool servidas[2];
+    for(int i=1;i<=ronda;i++){
+        auxServida=i;
+        numRonda++;
+        servidas[0]=false;
+        servidas[1]=false;
+        for(int z=0;z<cantJugad;z++){
+        int puntaje=0;
+        cServida=1;
+        poneTodoUnvEn0(contServ,6);
+        jugador=z;
+        puntaje = sumaPuntaje(vPuntaje,10,jugador);
+        cout<<"Turno De "<<jug[jugador]<<"| Ronda "<<numRonda<<"| Puntaje Total:"<<puntaje<<" puntos"<<endl;
+        cout<<"Tiradas Totales:"<<tiradasTotales[jugador]<<endl;
+
+        int dados[tam];
+        bool vFalsos[tam]={false,false,false,false,false};
+
+            cargaDados(dados,vFalsos,tam);
+            elegirDados(vFalsos,tam,dados,tiradasTotales,jugador,cServida);
+            muestraDados(dados,tam);
+            switch(z+1){
+                case 1: contarRepetidos(dados,tam,contServ);
+                        if(cServida==1){servidas[0]=detectarGenerala(contServ,6);}
+                        if(servidas[0]==true){
+                            i=ronda+1;
+                            cout<<"GENERALA SERVIDA!"<<endl;}
+                        break;
+
+                case 2: contarRepetidos(dados,tam,contServ);
+                        if(cServida==1){servidas[1]=detectarGenerala(contServ,6);}
+                        if(servidas[1]==true){
+                            i=ronda+1;
+                            cout<<"GENERALA SERVIDA!"<<endl;}
+                        break;
+            }
+            cout<<"servida 1: "<<servidas[0]<<endl<<"servida 2: "<<servidas[1]<<endl;
+        if(servidas[0]==true&&servidas[1]==true){i=auxServida;}
+        anotarPuntos(dados,vPuntaje,jugador);
+        system("cls");
+        }
+        if(i<ronda){resumenRonda(i,tiradasTotales,cantJugad,jug,vPuntaje,ronda);}
+        }
+        maximo=compararPuntajes(vPuntaje,jug,tiradasTotales,cantJugad,servidas,ganador,maxTiradas);
+        return maximo;
+}
+
+int iniciaPartida(char nombres[2][10],int jugador,int& ganador,int& maxTiradas){
+int r,maximo;
 cout<<"ingrese el numero de rondas a jugar:";cin>>r;
-int n,j=0;
+  while(r>10||r<1){
+   system("cls");
+        cout<<"El numero de rondas debe estar entre 1 y 10"<<endl;
+        cout<<"ingrese el numero de rondas a jugar:";cin>>r;
+}
 int vPuntaje[10][2];
 niegaMatriz(vPuntaje,10);
-cout<<"1| 1 Jugador"<<endl;
-cout<<"2| 2 Jugadores"<<endl;
-cout<<"opcion:";cin>>n;
 system("cls");
-  int i;
-  for(i=0;i<n;i++){
+    for(int i=0;i<jugador;i++){
     cout<<"Nombre del jugador "<<i+1<<":";cin>>nombres[i];
     }
 system("cls");
-partida(n,vPuntaje,r,nombres);
-imprimePuntaje(n,vPuntaje,nombres);
-system("pause");
+maximo=partida(jugador,vPuntaje,r,nombres,ganador,maxTiradas);
+return maximo;
 }
 #endif // FUNCIONES_H_INCLUDED
