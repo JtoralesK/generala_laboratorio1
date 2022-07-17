@@ -2,29 +2,24 @@
 #define FUNCIONES_H_INCLUDED
 void niegaMatriz(int v[][2],int tam){
  for(int x=0;x<tam;x++){
-        v[x][0]=-1;
-        }
+        v[x][0]=-1;}
     for(int x=0;x<tam;x++){
-    v[x][1]=-1;
-    }
+    v[x][1]=-1;}
 }
 void poneTodoUnvEn0(int v[],int tam){
  for(int x=0;x<tam;x++){
-        v[x]=0;
-        }
+        v[x]=0;}
 }
 void muestraDados(int v[],int tam){
 cout<<"--------"<<endl;
 for(int i=0;i<tam;i++){
-    cout<<"dado "<<i+1<<":"<<v[i]<<endl;
-}
+    cout<<"dado "<<i+1<<":"<<v[i]<<endl;}
 cout<<"--------"<<endl;
 }
 int sumaPuntaje(int vPuntaje[][2],int tam,int ju){
     int puntaje=0;
     for(int i=0;i<10;i++){
-        if(vPuntaje[i][ju]!=-1)puntaje=puntaje+vPuntaje[i][ju];
-    }
+        if(vPuntaje[i][ju]!=-1)puntaje=puntaje+vPuntaje[i][ju];}
     return puntaje;
 }
 void contarRepetidos (int v1[] , int tam , int v2[] ){
@@ -37,8 +32,7 @@ for (i=0;i<tam;i++){
     case 4:c4++; v2[3]=c4;break;
     case 5:c5++; v2[4]=c5;break;
     case 6:c6++; v2[5]=c6;break;
-    }
-}
+    }}
 }
 bool detectarEscalera(int v[], int tam){
 int i,c=0;
@@ -48,7 +42,8 @@ for(i=0;i<tam;i++){
     if(c==5){esc=true;}
     if(v[0]==1&&v[5]==1){esc=false;}
 }
-return esc;}
+return esc;
+}
 bool detectarFull(int v[], int tam){
 int i;
 bool full=false , dosDigitos=false , tresDigitos=false;
@@ -67,8 +62,7 @@ bool detectarPoker(int v[], int tam){
 int i;
 bool poker=false;
 for (i=0;i<tam;i++){
-        if(v[i]>=4){poker=true;}
-}
+        if(v[i]>=4){poker=true;}}
 return poker;
 }
 
@@ -208,7 +202,7 @@ void muestraGanador(char jugador[][10],int v[2],int tiradas[],int gan){
     cout<<"tiradas totales del jugador: "<<tiradas[gan]<<endl;
 }
 
-int compararPuntajes(int mat[][2],char jugador[][10],int tiradas[],int cant, bool servidas[2],int& ganador,int& maxTiradas){
+int compararPuntajes(int mat[][2],char jugador[][10],int tiradas[],int cantJugad, bool servidas[2],int& ganador,int& maxTiradas){
     system("cls");
 int i,j, v[2],mayor;
 poneTodoUnvEn0(v,2);
@@ -235,11 +229,17 @@ for(i=0;i<2;i++){
                    mayor=v[1];
                    ganador=1;
                    maxTiradas=tiradas[1];
-                   }
-                        else{cout<<"TENEMOS UN EMPATE!"<<endl;
+                   }else{
+                            if(cantJugad==2){
+                                cout<<"TENEMOS UN EMPATE!"<<endl;
                              cout<<"puntaje final de ambos jugadores: "<<v[0]<<endl;
-                             cout<<"tiradas totales: "<<tiradas[0]+tiradas[1]<<endl;
-                             mayor=v[0];}
+                             cout<<"tiradas totales: "<<tiradas[0]+tiradas[1]<<endl;}
+                             if(cantJugad==1){
+                                    cout<<"Su puntaje es de 0"<<endl;
+                                     cout<<"tiradas totales: "<<tiradas[0]+tiradas[1]<<endl;}
+                                        mayor=v[0];
+                                        maxTiradas=tiradas[0];
+                                }
         }
     }
 
@@ -256,8 +256,8 @@ int partida(int cantJugad,int vPuntaje[][2],int ronda,char jug[2][10],int& ganad
     for(int i=1;i<=ronda;i++){
         auxServida=i;
         numRonda++;
-        servidas[0]=false;
-        servidas[1]=false;
+        servidas[0]=false;servidas[1]=false;
+        ///ciclo de 1 o 2 jugadores
         for(int z=0;z<cantJugad;z++){
         int puntaje=0;
         cServida=1;
@@ -266,13 +266,13 @@ int partida(int cantJugad,int vPuntaje[][2],int ronda,char jug[2][10],int& ganad
         puntaje = sumaPuntaje(vPuntaje,10,jugador);
         cout<<"Turno De "<<jug[jugador]<<"| Ronda "<<numRonda<<"| Puntaje Total:"<<puntaje<<" puntos"<<endl;
         cout<<"Tiradas Totales:"<<tiradasTotales[jugador]<<endl;
-
-        int dados[tam];
-        bool vFalsos[tam]={false,false,false,false,false};
-
+            ///tira dados
+            int dados[tam];
+            bool vFalsos[tam]={false,false,false,false,false};
             cargaDados(dados,vFalsos,tam);
             elegirDados(vFalsos,tam,dados,tiradasTotales,jugador,cServida);
             muestraDados(dados,tam);
+            ///constata generala servida
             switch(z+1){
                 case 1: contarRepetidos(dados,tam,contServ);
                         if(cServida==1){servidas[0]=detectarGenerala(contServ,6);}
@@ -288,7 +288,6 @@ int partida(int cantJugad,int vPuntaje[][2],int ronda,char jug[2][10],int& ganad
                             cout<<"GENERALA SERVIDA!"<<endl;}
                         break;
             }
-            cout<<"servida 1: "<<servidas[0]<<endl<<"servida 2: "<<servidas[1]<<endl;
         if(servidas[0]==true&&servidas[1]==true){i=auxServida;}
         anotarPuntos(dados,vPuntaje,jugador);
         system("cls");
