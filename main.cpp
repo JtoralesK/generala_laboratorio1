@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 # include<string.h>
-
+///Integrantes: Agustin Milanes y Javier Torales
 using namespace std;
 #include "funciones.h"
 int main(){
