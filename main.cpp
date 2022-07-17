@@ -1,15 +1,18 @@
 # include<iostream>
 # include<cstdlib>
 # include<time.h>
+#include <stdlib.h>
+#include <string.h>
 # include<string.h>
 
 using namespace std;
 #include "funciones.h"
 int main(){
     bool seguir=true;
-    char palabras[2][10];
-    int opciones,maximo=0,maxNombre=0,maxTiradas=0,ultimoPuntaje, ganador;
+    char palabras[2][10],nombre[10];
+    int opciones,maximo=0,tiradas=0;
     while(seguir==true){
+    int ultimoPuntaje,maxTiradas=0,ganador;
     system("cls");
     cout<<"-----------------------------"<<endl;
     cout<<"1| Juego nuevo de a 1"<<endl;
@@ -28,16 +31,22 @@ int main(){
             ultimoPuntaje=iniciaPartida(palabras,opciones,ganador,maxTiradas);
                 if(ultimoPuntaje>maximo){
                         maximo=ultimoPuntaje;
-                        maxNombre=1;}
+                        tiradas=maxTiradas;
+                         strcpy(nombre,palabras[ganador]);
+                        }
         break;
         case 2:
             ultimoPuntaje=iniciaPartida(palabras,opciones,ganador,maxTiradas);
-                if(ultimoPuntaje>maximo){maximo=ultimoPuntaje;}
+                if(ultimoPuntaje>maximo){
+                        maximo=ultimoPuntaje;
+                        tiradas=maxTiradas;
+                         strcpy(nombre,palabras[ganador]);
+                }
         break;
         case 3:
             cout<<"el record actual es de: "<<maximo<<endl;
-            cout<<"nombre del jugador:"<<palabras[ganador]<<endl;
-            cout<<"tiradas:"<<maxTiradas<<endl;
+            cout<<"nombre del jugador:"<<nombre<<endl;
+            cout<<"tiradas:"<<tiradas<<endl;
         system("pause");
         default : cout<<"opcion incorrecta"<<endl;
     }
